@@ -59,7 +59,7 @@ class CheckcontractPage extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
         title: Text(
-          'ตรวจสอบสัญญา',
+          'ตรวจสอบสัญญาl',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
