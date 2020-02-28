@@ -68,7 +68,7 @@ class _CheckcontractPageState extends State<CheckcontractPage> {
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
         title: Text(
-          'ตรวจสอบสัญญา',
+          'ตรวจสอบสัญญาs',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
