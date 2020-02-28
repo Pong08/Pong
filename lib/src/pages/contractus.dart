@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/pages/googlemappage.dart';
 import 'package:flutter_app/src/themes/background_app.dart';
 import 'package:http/http.dart' as http;
 
 class ContractusPage extends StatelessWidget {
   Future<List<Cmpcode>> _getCmpcode() async {
     final strsql =
-        "select cmpcode,cmpname,addressi,addressii,addressiii,phoneno,opendaily, openholiday from hlp_branchno order by cmpcode" ;
+        "select cmpcode,cmpname,addressi,addressii,addressiii,phoneno,opendaily, openholiday,latitude,longitude from hlp_branchno order by cmpcode" ;
 
     final www = "http://203.154.100.207/SINTHANEE123";
 
@@ -28,7 +29,9 @@ class ContractusPage extends StatelessWidget {
           u["addressiii"],
           u["phoneno"],
           u["opendaily"],
-          u["openholiday"]);
+          u["openholiday"],
+          u["latitude"],
+          u["longitude"]);
 
       tblcmpcode.add(cmpcode);
     }
@@ -119,8 +122,15 @@ class ContractusPage extends StatelessWidget {
                                //   Text(rs.data[index].openholiday),
                                 ],
                               ),
-                              trailing: Icon(
-                                Icons.map,color: Colors.blue,
+                              trailing: InkWell(
+                                onTap: (){
+                                  Navigator.push(
+                                      context, MaterialPageRoute(builder: (context) => GoogleMapPage(latitude: rs.data[index].latitude,longitude: rs.data[index].longitude)));
+
+                                },
+                                child: Icon(
+                                  Icons.map,color: Colors.blue,
+                                ),
                               ),
                             ),
 
@@ -151,7 +161,8 @@ class Cmpcode {
   final String phoneno;
   final String opendaily;
   final String openholiday;
-
+  final String latitude;
+  final String longitude;
   Cmpcode(this.cmpcode, this.cmpname, this.addressi, this.addressii,
-      this.addressiii, this.phoneno, this.opendaily, this.openholiday);
+      this.addressiii, this.phoneno, this.opendaily, this.openholiday, this.latitude, this.longitude);
 }

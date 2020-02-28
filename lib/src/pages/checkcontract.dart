@@ -5,24 +5,33 @@ import 'package:flutter_app/src/themes/background_app.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class CheckcontractPage extends StatelessWidget {
+class CheckcontractPage extends StatefulWidget {
   final String mycontractno;
   final String myproductname;
   final String myhp_overdueamt;
 
-  num hploannet = 0;
-  String output = "0";
-  num sumbalance = 0;
+
   CheckcontractPage(
       {Key key, this.mycontractno, this.myproductname, this.myhp_overdueamt})
       : super(key: key);
+
+  @override
+  _CheckcontractPageState createState() => _CheckcontractPageState();
+}
+
+class _CheckcontractPageState extends State<CheckcontractPage> {
+  num hploannet = 0;
+
+  String output = "0";
+
+  num sumbalance = 0;
 
   Future<List<Hpcontract>> _getContract() async {
     final strsql =
         "select p.paiddate,p.receiveno,p.hpamt,p.period,p.duedate,p.amount,p.paidamt, " +
             "p.hpbalance,h.hploannet " +
             "from tblhpcontract h,tblhppaidlate p " +
-            "where h.contractno = p.contractno and h.contractno = '$mycontractno'  " +
+            "where h.contractno = p.contractno and h.contractno = '${widget.mycontractno}'  " +
             "and functioncode='402' " +
             "order by p.duedate,p.paiddate,p.seqno";
 
@@ -59,7 +68,7 @@ class CheckcontractPage extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
         title: Text(
-          'ตรวจสอบสัญญาl',
+          'ตรวจสอบสัญญา',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -105,7 +114,7 @@ class CheckcontractPage extends StatelessWidget {
                                     color: Colors.black87),
                           ),
                           Text(
-                            mycontractno,
+                            widget.mycontractno,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontSize: 20,
@@ -124,7 +133,7 @@ class CheckcontractPage extends StatelessWidget {
                                 TextStyle(fontSize: 13, color: Colors.black87),
                           ),
                           Text(
-                            myproductname,
+                            widget.myproductname,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontSize: 13,
@@ -143,7 +152,7 @@ class CheckcontractPage extends StatelessWidget {
                                 TextStyle(fontSize: 13, color: Colors.black87),
                           ),
                           Text(
-                            myhp_overdueamt,
+                            widget.myhp_overdueamt,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontSize: 13,
