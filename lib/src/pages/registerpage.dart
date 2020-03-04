@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/pages/checkregister.dart';
 import 'package:flutter_app/src/pages/otppage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,6 +28,10 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  var _customercodeField = TextEditingController();
+  var _mobilenoField = TextEditingController();
+  var _arnameField = TextEditingController();
+
   File _image;
 
   Future getImage() async {
@@ -74,14 +81,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             height: 200,
                             child: _image == null
                                 ? CircleAvatar(
-                              backgroundColor: Colors.grey[100],
+                                    backgroundColor: Colors.grey[100],
                                     child: Icon(
                                       Icons.account_circle,
                                       size: 200,
                                       color: Colors.white,
                                     ),
                                   )
-                                : Image.file(_image,fit: BoxFit.cover,),
+                                : Image.file(
+                                    _image,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                       ],
@@ -94,11 +104,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.account_circle),
                         hintText: 'ชื่อ - นามสกุล',
-                        contentPadding:
-                            EdgeInsets.fromLTRB(1.0, 1.0, 1.0,1.0),
+                        contentPadding: EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 1.0),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0)),
                       ),
+                      controller: _arnameField,
                     ),
                     SizedBox(
                       height: 10.0,
@@ -108,11 +118,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.credit_card),
                         hintText: 'เลขประจำตัวประชาชน',
-                        contentPadding:
-                            EdgeInsets.fromLTRB(1.0, 1.0, 1.0,1.0),
+                        contentPadding: EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 1.0),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0)),
                       ),
+                      controller: _customercodeField,
                     ),
                     SizedBox(
                       height: 10.0,
@@ -122,11 +132,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.phone),
                         hintText: 'เบอร์โทรศัพท์',
-                        contentPadding:
-                            EdgeInsets.fromLTRB(1.0, 1.0, 1.0,1.0),
+                        contentPadding: EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 1.0),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0)),
                       ),
+                      controller: _mobilenoField,
                     ),
                     SizedBox(
                       height: 0.0,
@@ -136,11 +146,38 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: double.infinity,
                       child: RaisedButton(
                         elevation: 4.0,
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterOTP()));
+                        onPressed: () async {
+                          final customercode = _customercodeField.text;
+                          final mobileno = _mobilenoField.text;
+
+                          final result =
+                              await AuthService().login(customercode, mobileno);
+
+                          if (result == true) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterOTP()));
+                          } else {
+                            showDialog<void>(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext dialogContext) {
+                                return AlertDialog(
+                                  content: Text('กรุณากรอกข้อมูลให้ถูกต้อง'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(dialogContext)
+                                            .pop(); // Dismiss alert dialog
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
                         color: Colors.blueAccent,
                         padding: EdgeInsets.all(12.0),
