@@ -179,7 +179,7 @@ class Circle extends StatelessWidget {
 
   Circle({Key key, this.filled = false, @required this.circleUIConfig})
       : super(key: key);
-
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
