@@ -6,11 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/pages/profilepage.dart';
 
 class PincodePage extends StatefulWidget {
-  PincodePage({Key key, this.title}) : super(key: key);
-  final String title;
+  final String otpcode;
+  final String p_customercode;
+  PincodePage({Key key,  this.otpcode, this.p_customercode}) : super(key: key);
+
 
   @override
   State<StatefulWidget> createState() => _PincodePageState();
+
+
 }
 
 class _PincodePageState extends State<PincodePage> {
@@ -21,6 +25,7 @@ class _PincodePageState extends State<PincodePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.p_customercode);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -30,14 +35,17 @@ class _PincodePageState extends State<PincodePage> {
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
       ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
             Text(
               'ผู้ใช้งาน : ${isAuthenticated ? '' : 'ยังไม่ได้'} ยืนยันตัวตน',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+
             SizedBox(
               height: 30,
             ),
@@ -139,12 +147,24 @@ class _PincodePageState extends State<PincodePage> {
   }
 
   _onPasscodeEntered(String enteredPasscode) {
-    bool isValid = '123456' == enteredPasscode;
+    bool isValid = widget.otpcode == enteredPasscode;
     _verificationNotifier.add(isValid);
+    print(widget.otpcode);
     if (isValid) {
       setState(() {
         this.isAuthenticated = isValid;
       });
+
+
+      if (isValid=true){
+
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ProfilePage(p_customercode:
+            widget.p_customercode)));
+      }
+
+
+
     }
   }
 
@@ -179,7 +199,7 @@ class Circle extends StatelessWidget {
 
   Circle({Key key, this.filled = false, @required this.circleUIConfig})
       : super(key: key);
- 
+
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -6,6 +6,10 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_app/src/pages/pincodepage.dart';
 
 class RegisterOTP extends StatefulWidget {
+  final String p_customercode;
+
+  RegisterOTP({Key key, this.p_customercode}) : super(key: key);
+
   @override
   _RegisterOTPState createState() => _RegisterOTPState();
 }
@@ -37,7 +41,6 @@ class _RegisterOTPState extends State<RegisterOTP> {
         height: MediaQuery.of(context).size.height * 0.8,
         child: Center(
           child: Column(
-
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Padding(
@@ -65,7 +68,7 @@ class _RegisterOTPState extends State<RegisterOTP> {
                       "รหัส OTP",
                       textAlign: TextAlign.center,
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     padding: EdgeInsets.all(10),
 //                onPressed: () {
@@ -110,7 +113,9 @@ class _RegisterOTPState extends State<RegisterOTP> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PincodePage()));
+                                builder: (context) => PincodePage(
+                                    otpcode: '$_number',
+                                    p_customercode: widget.p_customercode)));
                       },
                       color: Colors.blueAccent,
                       padding: EdgeInsets.all(10.0),

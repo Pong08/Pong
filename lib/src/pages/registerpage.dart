@@ -157,7 +157,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => RegisterOTP()));
+                                    builder: (context) => RegisterOTP(p_customercode : customercode)));
                           } else {
                             showDialog<void>(
                               context: context,
