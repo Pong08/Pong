@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_app/src/pages/bankpage.dart';
 import 'package:flutter_app/src/pages/contractpage.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+//import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,32 +11,36 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_app/src/themes/background_app.dart';
 import 'package:image_picker/image_picker.dart';
 
-class MyPayIn extends StatefulWidget {
-  MyPayIn({Key key, this.mycontractno, this.myhp_overdueamt}) : super(key: key);
+import 'checkregister.dart';
 
-  final String mycontractno;
-  final String myhp_overdueamt;
+class PayinPage extends StatefulWidget {
+  PayinPage(
+      {Key key,
+        this.p_contractno,
+        this.p_hp_overdueamt,
+        this.p_bankcode,
+        this.p_bankname})
+      : super(key: key);
 
+  final String p_contractno;
+  final String p_hp_overdueamt;
+  final String p_bankcode;
+  final String p_bankname;
   @override
-  _MyPayInState createState() =>
-      _MyPayInState(this.mycontractno, this.myhp_overdueamt);
+  _PayinPageState createState() => _PayinPageState(this.p_contractno,
+      this.p_hp_overdueamt, this.p_bankcode, this.p_bankname);
 }
 
-class _MyPayInState extends State<MyPayIn> {
-  final String mycontractno;
-  final String myhp_overdueamt;
-  _MyPayInState(this.mycontractno, this.myhp_overdueamt);
+class _PayinPageState extends State<PayinPage> {
 
-  var _currencies = [
-    'ธนาคารกรุงเทพ',
-    'ธนาคารกสิรกรไทย',
-    'ธนาคารกรุงไทย',
-    'ธนาคารไทยพาณิชย์',
-    'ธนาคารทหารไทย',
-    'ธนาคารกรุงศรีอยุธยา',
-    'ธนาคารออมสิน',
-    'ธนาคารธนชาต',
-  ];
+  final String p_contractno;
+  final String p_hp_overdueamt;
+  final String p_bankcode;
+  final String p_bankname;
+
+  _PayinPageState(this.p_contractno, this.p_hp_overdueamt, this.p_bankcode,
+      this.p_bankname);
+
   var _currentItemSelected = 'ธนาคารกรุงเทพ';
   String _date = "";
   String _time = "";
@@ -87,6 +92,12 @@ class _MyPayInState extends State<MyPayIn> {
     });
   }
 
+
+
+
+
+
+
   Widget showImage() {
     return FutureBuilder<File>(
       future: file,
@@ -113,6 +124,35 @@ class _MyPayInState extends State<MyPayIn> {
       },
     );
   }
+
+
+
+  setStatus2(String message) {
+    setState(() {
+      status = message;
+    });
+  }
+
+  updatedata() {
+
+    final strsql =
+        "update tblhpcontract set nation = 'CCCXXX' " +
+
+            "where contractno = 'A06210-0002' ";
+
+    http.post('https://shiftsoft-dev.net/Hi-Demo/exetest.php', body: {
+      "sqltype": 'execute',
+      "psql": strsql,
+    }).then((result) {
+
+      setStatus2(result.statusCode == 200 ? result.body : errMessage);
+
+    }).catchError((error) {
+      setStatus2(error);
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +184,7 @@ class _MyPayInState extends State<MyPayIn> {
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        color: Colors.grey[200],
+                       // color: Colors.grey[200],
                         width: double.infinity,
                         height: 40,
                         child: Row(
@@ -158,7 +198,7 @@ class _MyPayInState extends State<MyPayIn> {
                               ),
                             ),
                             Text(
-                              mycontractno,
+                              p_contractno,
                               textAlign: TextAlign.end,
                               style: TextStyle(
                                   fontSize: 18,
@@ -170,7 +210,7 @@ class _MyPayInState extends State<MyPayIn> {
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        color: Colors.white,
+                       // color: Colors.white,
                         width: double.infinity,
                         height: 40,
                         child: Row(
@@ -184,7 +224,7 @@ class _MyPayInState extends State<MyPayIn> {
                               ),
                             ),
                             Text(
-                              myhp_overdueamt,
+                              p_hp_overdueamt,
                               textAlign: TextAlign.end,
                               style: TextStyle(
                                   fontSize: 18,
@@ -205,7 +245,7 @@ class _MyPayInState extends State<MyPayIn> {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 200,
+                    height: MediaQuery.of(context).size.height*0.3,
                     child: Center(child: showImage()),
                   ),
                   Container(
@@ -225,6 +265,7 @@ class _MyPayInState extends State<MyPayIn> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
+                  height: MediaQuery.of(context).size.height*0.45,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -234,20 +275,20 @@ class _MyPayInState extends State<MyPayIn> {
                             borderRadius: BorderRadius.circular(5.0)),
                         elevation: 4.0,
                         onPressed: () {
-                          DatePicker.showDatePicker(context,
-                              theme: DatePickerTheme(
-                                containerHeight: 210.0,
-                              ),
-                              showTitleActions: true,
-                              minTime: DateTime(2563, 1, 1),
-                              maxTime: DateTime(2568, 12, 31),
-                              onConfirm: (date) {
-                                print('confirm $date');
-                                _date = '${date.day}/${date.month}/${date.year}';
-                                setState(() {});
-                              },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.th);
+//                          DatePicker.showDatePicker(context,
+//                              theme: DatePickerTheme(
+//                                containerHeight: 210.0,
+//                              ),
+//                              showTitleActions: true,
+//                              minTime: DateTime(2563, 1, 1),
+//                              maxTime: DateTime(2568, 12, 31),
+//                              onConfirm: (date) {
+//                                print('confirm $date');
+//                                _date = '${date.day}/${date.month}/${date.year}';
+//                                setState(() {});
+//                              },
+//                              currentTime: DateTime.now(),
+//                              locale: LocaleType.th);
                         },
                         child: Container(
                           height: 50.0,
@@ -297,18 +338,18 @@ class _MyPayInState extends State<MyPayIn> {
                             borderRadius: BorderRadius.circular(5.0)),
                         elevation: 4.0,
                         onPressed: () {
-                          DatePicker.showTimePicker(context,
-                              theme: DatePickerTheme(
-                                containerHeight: 210.0,
-                              ),
-                              showTitleActions: true, onConfirm: (time) {
-                                print('confirm $time');
-                                _time = '${time.hour} : ${time.minute}';
-                                setState(() {});
-                              },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.en);
-                          setState(() {});
+//                          DatePicker.showTimePicker(context,
+//                              theme: DatePickerTheme(
+//                                containerHeight: 210.0,
+//                              ),
+//                              showTitleActions: true, onConfirm: (time) {
+//                                print('confirm $time');
+//                                _time = '${time.hour} : ${time.minute}';
+//                                setState(() {});
+//                              },
+//                              currentTime: DateTime.now(),
+//                              locale: LocaleType.en);
+//                          setState(() {});
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -355,22 +396,21 @@ class _MyPayInState extends State<MyPayIn> {
                       SizedBox(
                         height: 5.0,
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 0),
-                              blurRadius: 6,
-                              spreadRadius: 10,
-                              color: Color.fromARGB(20, 0, 0, 0),
-                            ),
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        elevation: 4.0,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BankPage(
+                                      mycontractno: p_contractno,
+                                      myhp_overdueamt: p_hp_overdueamt)));
+                        },
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          alignment: Alignment.center,
+                          height: 50.0,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -386,35 +426,43 @@ class _MyPayInState extends State<MyPayIn> {
                                       padding:
                                       EdgeInsets.symmetric(horizontal: 5),
                                     ),
-                                    Text(
-                                      "เลือกธนาคาร",
+
+                                    p_bankname == ''
+                                        ? Text(
+                                      'ธนาคาร',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        //  fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                      ),
+                                    )
+                                        : Text(
+                                      p_bankname,
                                       style: TextStyle(
                                         color: Colors.black,
                                         //  fontWeight: FontWeight.bold,
                                         fontSize: 16.0,
                                       ),
                                     ),
+
+//                                    Text(
+//                                      p_bankname,
+//                                      style: TextStyle(
+//                                        color: Colors.black,
+//                                        //  fontWeight: FontWeight.bold,
+//                                        fontSize: 16.0,
+//                                      ),
+//                                    ),
                                   ],
                                 ),
                               ),
-                              DropdownButton<String>(
-                                items: _currencies
-                                    .map((String dropDownStringItem) {
-                                  return DropdownMenuItem<String>(
-                                    value: dropDownStringItem,
-                                    child: Text(dropDownStringItem,
-                                        textAlign: TextAlign.center),
-                                  );
-                                }).toList(),
-                                onChanged: (String newValueSelected) {
-                                  _onDropDownItemSelected(newValueSelected);
-                                },
-                                value: _currentItemSelected,
-                                hint: Text('เลือกธนาคาร'),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 80),
                               ),
                             ],
                           ),
                         ),
+                        color: Colors.white,
                       ),
                       SizedBox(
                         height: 5.0,
@@ -449,26 +497,22 @@ class _MyPayInState extends State<MyPayIn> {
                         height: 5,
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10.0),
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          width: double.infinity,
-                          child: RaisedButton(
-                            elevation: 4.0,
-                            onPressed: startUpload,
-                            color: Colors.blueAccent,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Colors.blueAccent, width: 1),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Text(
-                              'ส่ง',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                        width: double.infinity,
+                        child: RaisedButton(
+                          elevation: 4.0,
+                          color: Colors.blueAccent,
+                          padding: EdgeInsets.all(12.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28.0),
+                          ),
+                          onPressed: () {
+                          },
+                          child: Text('ส่ง',
+                            style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 1.5,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

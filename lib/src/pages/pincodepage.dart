@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/pages/checkregister.dart';
 import 'package:flutter_app/src/pages/profilepage.dart';
 
 class PincodePage extends StatefulWidget {
@@ -105,24 +105,7 @@ class _PincodePageState extends State<PincodePage> {
           _showLockScreen(context, opaque: false);
         },
       );
-/*
-  _customColorsLockScreenButton(BuildContext context) => MaterialButton(
-    color: Colors.blueAccent,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero,side: BorderSide(
-        color: Colors.blueAccent, style: BorderStyle.solid, width: 2)),height: 50,minWidth: double.minPositive,
-    child: Text('Open Custom Lock Screen', style: TextStyle(color: Colors.white,fontSize: 20),),
-        onPressed: () {
-          _showLockScreen(context,
-              opaque: false,
-              circleUIConfig: CircleUIConfig(
-                  borderColor: Colors.blue,
-                  fillColor: Colors.blue,
-                  circleSize: 30),
-              keyboardUIConfig: KeyboardUIConfig(
-                  digitBorderWidth: 2, primaryColor: Colors.blue));
-        },
-      );
-*/
+
   _showLockScreen(BuildContext context,
       {bool opaque,
       CircleUIConfig circleUIConfig,
@@ -146,7 +129,7 @@ class _PincodePageState extends State<PincodePage> {
         ));
   }
 
-  _onPasscodeEntered(String enteredPasscode) {
+  _onPasscodeEntered(String enteredPasscode) async {
     bool isValid = widget.otpcode == enteredPasscode;
     _verificationNotifier.add(isValid);
     print(widget.otpcode);
@@ -157,11 +140,13 @@ class _PincodePageState extends State<PincodePage> {
 
 
       if (isValid=true){
+        AuthService().loginok(widget.p_customercode,widget.otpcode);
 
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => ProfilePage(p_customercode:
             widget.p_customercode)));
       }
+
 
 
 
@@ -176,6 +161,8 @@ class _PincodePageState extends State<PincodePage> {
     super.dispose();
   }
 }
+
+
 
 //--
 class CircleUIConfig {

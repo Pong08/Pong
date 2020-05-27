@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, //แก้เอาคำว่า  debug  ออก
+
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -46,10 +48,9 @@ class _ProfilePageState extends State<ProfilePage> {
     for (var u in jsonData) {
       Customer customer =
           Customer(u["arname"], u["brithdate"], u["mobileno"], u["arstatus"]);
-
       tblcustomer.add(customer);
     }
-    print(tblcustomer.length);
+
     return tblcustomer;
   }
 
@@ -65,6 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           'ข้อมูลส่วนบุคคล',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter_app/src/pages/checkregister.dart';
 import 'package:flutter_app/src/pages/notificationpage.dart';
 import 'package:flutter_app/src/pages/registerpage.dart';
 import 'package:flutter_app/src/themes/background_app.dart';
@@ -96,7 +97,42 @@ class _HomePageState extends State<HomePage>
               Icons.power_settings_new,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+
+              showDialog<void>(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext dialogContext) {
+                  return AlertDialog(
+                    content: Text('คุณต้องการออกจากระบบหรือไม่'),
+                    actions: <Widget>[
+
+                      Row(
+                        children: <Widget>[
+                          FlatButton(
+                            child: Text('ต้องการ'),
+                            onPressed: () {
+                              AuthService().logout();
+                              Navigator.of(dialogContext)
+                                  .pop(); // Dismiss alert dialog
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('ยกเลิก'),
+                            onPressed: () {
+                              Navigator.of(dialogContext)
+                                  .pop(); // Dismiss alert dialog
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+
+
+            },
           ),
         ],
       ),
@@ -205,12 +241,12 @@ class _ImageCarouselState extends State<ImageCarousel> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(10.0),
-        height: 150,
+        padding: EdgeInsets.all(2.0),
+        height: 120,
         child: Container(
           decoration: new BoxDecoration(
             border: new Border.all(color: Colors.black45, width: 1),
-            borderRadius: new BorderRadius.all(Radius.circular(20.0)),
+            borderRadius: new BorderRadius.all(Radius.circular(4.0)),
             shape: BoxShape.rectangle,
           ),
           child: ClipRRect(

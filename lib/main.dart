@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/pages/checkregister.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './src/pages/homepage.dart';
 import './src/pages/contractpage.dart';
 import './src/pages/contractus.dart';
@@ -10,29 +12,34 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() =>
-     MyAppState();
-
+  State<StatefulWidget> createState() => MyAppState();
 }
 
 class MyAppState extends State<MyApp> {
   int selectedPage = 0;
+
   final _pageOptions = [
     HomePage(),
     ContractPage(),
     ContractusPage(),
     OtherPage(),
   ];
+
   @override
   Widget build(BuildContext context) {
+//     AuthService().getlogin();
+//     print(AuthService().getlogin());
+    //print("main");
+    //print(AuthService().userlogin());
     return MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,  // Add global cupertino localiztions.
+        GlobalCupertinoLocalizations
+            .delegate, // Add global cupertino localiztions.
       ],
-      locale: Locale('en', 'US'),  // Current locale
+      locale: Locale('en', 'US'), // Current locale
       supportedLocales: [
         const Locale('en', 'US'), // English
         const Locale('th', 'TH'), // Thai
@@ -41,7 +48,8 @@ class MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routes: <String, WidgetBuilder>{ //app routes
+      routes: <String, WidgetBuilder>{
+        //app routes
         '/home': (BuildContext context) => new MyApp(),
       },
       home: Scaffold(
@@ -71,3 +79,6 @@ class MyAppState extends State<MyApp> {
     );
   }
 }
+
+
+

@@ -6,13 +6,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CheckcontractPage extends StatefulWidget {
-  final String mycontractno;
-  final String myproductname;
-  final String myhp_overdueamt;
-
+  final String p_contractno;
+  final String p_productname;
+  final String p_hp_overdueamt;
 
   CheckcontractPage(
-      {Key key, this.mycontractno, this.myproductname, this.myhp_overdueamt})
+      {Key key, this.p_contractno, this.p_productname, this.p_hp_overdueamt})
       : super(key: key);
 
   @override
@@ -31,13 +30,13 @@ class _CheckcontractPageState extends State<CheckcontractPage> {
         "select p.paiddate,p.receiveno,p.hpamt,p.period,p.duedate,p.amount,p.paidamt, " +
             "p.hpbalance,h.hploannet " +
             "from tblhpcontract h,tblhppaidlate p " +
-            "where h.contractno = p.contractno and h.contractno = '${widget.mycontractno}'  " +
+            "where h.contractno = p.contractno and h.contractno = '${widget.p_contractno}'  " +
             "and functioncode='402' " +
             "order by p.duedate,p.paiddate,p.seqno";
 
-    final www = "http://203.154.100.207/SINTHANEE123";
+    final www = "http://shiftsoft-dev.net/Hi-Demo";
     var data = await http.get(
-        '$www/executedemo.php?p_dbmsname=X&p_username=sa&p_password=&p_type=select&p_sql=$strsql');
+        '$www/executeapp.php?p_dbmsname=X&p_username=sa&p_password=&p_type=select&p_sql=$strsql');
 
     var jsonData = json.decode(data.body);
 
@@ -102,19 +101,22 @@ class _CheckcontractPageState extends State<CheckcontractPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      SizedBox(height: 1,),
+                      SizedBox(
+                        height: 1,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
                             "สัญญาเลขที่ : ",
                             textAlign: TextAlign.left,
-                            style:
-                                TextStyle(fontSize: 18,                                             fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
                           ),
                           Text(
-                            widget.mycontractno,
+                            widget.p_contractno,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontSize: 20,
@@ -133,7 +135,7 @@ class _CheckcontractPageState extends State<CheckcontractPage> {
                                 TextStyle(fontSize: 13, color: Colors.black87),
                           ),
                           Text(
-                            widget.myproductname,
+                            widget.p_productname,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontSize: 13,
@@ -152,7 +154,7 @@ class _CheckcontractPageState extends State<CheckcontractPage> {
                                 TextStyle(fontSize: 13, color: Colors.black87),
                           ),
                           Text(
-                            widget.myhp_overdueamt,
+                            widget.p_hp_overdueamt,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontSize: 13,
@@ -349,19 +351,25 @@ class HeadColumn extends StatelessWidget {
                   Text(
                     "วันที่ชำระ",
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 14,                                            fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black87),
                   ),
                   Text(
                     "เลขที่ใบเสร็จ",
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 14,                                            fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black87),
                   ),
                   Text(
                     "ยอดจ่ายชำระ",
                     textAlign: TextAlign.end,
-                    style: TextStyle(fontSize: 14,                                             fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black87),
                   ),
                 ],

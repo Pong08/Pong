@@ -22,9 +22,9 @@ class ContractDetailPage extends StatelessWidget {
         "where h.contractno = '$mycontractno' and h.chassisno = s.chassisno " +
         "order by h.contractdate,h.contractno limit 1";
 
-    final www = "http://203.154.100.207/SINTHANEE123";
+    final www = "http://shiftsoft-dev.net/Hi-Demo";
     var data = await http.get(
-        '$www/executedemo.php?p_dbmsname=X&p_username=sa&p_password=&p_type=select&p_sql=$strsql');
+        '$www/executeapp.php?p_dbmsname=X&p_username=sa&p_password=&p_type=select&p_sql=$strsql');
 
     var jsonData = json.decode(data.body);
 
@@ -332,11 +332,12 @@ class ContractDetailPage extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MyPayIn(
-                                              mycontractno:
+                                          builder: (context) => PayinPage(
+                                              p_contractno:
                                               rs.data[index].contractno,
-                                              myhp_overdueamt: rs
-                                                  .data[index].hp_overdueamt)));
+                                              p_hp_overdueamt: rs
+                                                  .data[index].hp_overdueamt,
+                                              p_bankcode: '',p_bankname: '')));
                                 },
                                 child: Card(
                                   shape: RoundedRectangleBorder(
@@ -371,11 +372,11 @@ class ContractDetailPage extends StatelessWidget {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               CheckcontractPage(
-                                                  mycontractno:
+                                                  p_contractno:
                                                   rs.data[index].contractno,
-                                                  myproductname: rs
+                                                  p_productname: rs
                                                       .data[index].productname,
-                                                  myhp_overdueamt: rs
+                                                  p_hp_overdueamt: rs
                                                       .data[index]
                                                       .hp_overdueamt)));
                                 },

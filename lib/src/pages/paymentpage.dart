@@ -18,9 +18,9 @@ class PaymentPage extends StatelessWidget {
         "where h.contractno = '$mycontractno' and h.chassisno = s.chassisno " +
         "order by h.contractdate,h.contractno";
 
-    final www = "http://203.154.100.207/SINTHANEE123";
+    final www = "http://shiftsoft-dev.net/Hi-Demo";
     var data = await http.get(
-        '$www/executedemo.php?p_dbmsname=X&p_username=sa&p_password=&p_type=select&p_sql=$strsql');
+        '$www/executeapp.php?p_dbmsname=X&p_username=sa&p_password=&p_type=select&p_sql=$strsql');
 
     var jsonData = json.decode(data.body);
 
@@ -45,7 +45,6 @@ class PaymentPage extends StatelessWidget {
       tblhpcontract.add(hpcontract);
     }
 
-    // print(tblhpcontract.length);
 
     return tblhpcontract;
   }
@@ -91,7 +90,7 @@ class PaymentPage extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           //   height: 360,
-                          height: MediaQuery.of(context).size.height * 0.6,
+                          height: MediaQuery.of(context).size.height * 0.75,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -163,7 +162,7 @@ class PaymentPage extends StatelessWidget {
                                           "1. ชำระผ่าน ATM หรือโอนเงินผ่าน Interner banking มายังบัญชีธนาคารของบริษัท",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 17,
                                               color: Colors.black87),
                                         ),
                                       ),
@@ -173,13 +172,13 @@ class PaymentPage extends StatelessWidget {
                                     children: <Widget>[
                                       Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: 15),
+                                            horizontal: 17),
                                       ),
                                       Text(
                                         "ธนาคารไทยพาณิชย์ สาขา XXXXX",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 17,
                                             color: Colors.black87),
                                       ),
                                     ],
@@ -188,13 +187,13 @@ class PaymentPage extends StatelessWidget {
                                     children: <Widget>[
                                       Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: 15),
+                                            horizontal: 17),
                                       ),
                                       Text(
                                         "ชื่อบัญชี : ",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 17,
                                             color: Colors.black87),
                                       ),
                                     ],
@@ -209,7 +208,7 @@ class PaymentPage extends StatelessWidget {
                                         "เลขที่บัญชี : ",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 17,
                                             color: Colors.black87),
                                       ),
                                     ],
@@ -223,7 +222,7 @@ class PaymentPage extends StatelessWidget {
                                           "2. เก็บหลักฐานการโอนเงินและอัพโหลดภายในวัน",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 17,
                                               color: Colors.black87),
                                         ),
                                       ),
@@ -238,7 +237,7 @@ class PaymentPage extends StatelessWidget {
                                           "3. ยืนยันการชำระเงินภายใน 48 ชม. หากไม่ได้รับการยืนยันภายในเวลาดังกล่าวกรุณาติดต่อ ...",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 17,
                                               color: Colors.black87),
                                         ),
                                       ),
@@ -252,33 +251,34 @@ class PaymentPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.all(20),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 10.0),
-                            height: MediaQuery.of(context).size.height * 0.1,
-                            width: double.infinity,
-                            child: RaisedButton.icon(
-                              icon: Icon(
-                                Icons.cloud_upload,
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              width: double.infinity,
+                              child: RaisedButton(
+                                elevation: 4.0,
                                 color: Colors.blueAccent,
-                                size: 30,
-                              ),
-                              elevation: 4.0,
-                              onPressed: () {},
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.black, width: 2),
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              label: Text(
-                                'อัพโหลดหลักฐานการเงิน',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                padding: EdgeInsets.all(12.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(28.0),
+                                ),
+                                onPressed: () {
+                                },
+                                child: Text('อัพโหลดหลักฐานการชำระ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: 1.5,
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        )
+                        ),
+
                       ],
                     ),
                   );
